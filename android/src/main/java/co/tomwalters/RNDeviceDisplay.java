@@ -30,7 +30,7 @@ public class RNDeviceDisplay extends ReactContextBaseJavaModule {
     
     private final ReactApplicationContext reactContext;
     OrientationEventListener mOrientationListener;
-    String PreviousOrientationValue = "PORTRAIT";
+    String PreviousOrientationValue = "UNKNOWN";
     
     public RNDeviceDisplay(ReactApplicationContext reactContext) {
         super(reactContext);

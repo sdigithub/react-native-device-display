@@ -67,6 +67,9 @@ class Display {
   }
   updateOrientation(orientation) {
     var o = {};
+    if (!(this.orientation.current)) {
+      this.orientation.current = 'potrait'
+    }
     switch (orientation) {
       case 1:
         o = {
