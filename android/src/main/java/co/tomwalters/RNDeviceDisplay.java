@@ -27,17 +27,20 @@ import android.widget.Toast;
 
 
 public class RNDeviceDisplay extends ReactContextBaseJavaModule {
-    
+
     private final ReactApplicationContext reactContext;
     OrientationEventListener mOrientationListener;
-    String PreviousOrientationValue = "UNKNOWN";
-    
+    final int orientationInt = getReactApplicationContext().getResources().getConfiguration().orientation;
+    String orientation = this.getOrientationString(orientationInt);
+
+    String PreviousOrientationValue = orientation;
+
     public RNDeviceDisplay(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
-        
+
         final ReactApplicationContext thisContext = reactContext;
-        
+
         mOrientationListener = new OrientationEventListener(reactContext,
                                                             SensorManager.SENSOR_DELAY_NORMAL) {
             @Override
@@ -66,25 +69,25 @@ public class RNDeviceDisplay extends ReactContextBaseJavaModule {
                 }
             }
         };
-        
+
         if (mOrientationListener.canDetectOrientation() == true) {
             mOrientationListener.enable();
         } else {
             mOrientationListener.disable();
         }
     }
-    
+
     @Override
     public String getName() {
         return "DisplayDeviceUtil";
     }
-    
+
     private boolean isTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
         >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
-    
+
     //
     // private boolean isTablet(Context context) {
     //   return true;
@@ -103,7 +106,7 @@ public class RNDeviceDisplay extends ReactContextBaseJavaModule {
     //     // return true;
     //     // return isTablet;
     // }
-    
+
     /**
      * Read the 'isTablet' resource and determine if
      * the device is a phone or tablet based on size
@@ -114,11 +117,24 @@ public class RNDeviceDisplay extends ReactContextBaseJavaModule {
     public Map<String, Object> getConstants() {
         // boolean isTablet = getReactApplicationContext().getResources().getBoolean(R.bool.isTablet);
         boolean isTablet = this.isTablet(getReactApplicationContext());
-        
+
         final Map<String, Object> constants = new HashMap<>();
         constants.put("isPhone", !isTablet);
         constants.put("isTablet", isTablet);
         constants.put("testConst", "Hi there");
         return constants;
     }
+
+    private String getOrientationString(int orientation) {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            return "LANDSCAPE";
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            return "PORTRAIT";
+        } else if (orientation == Configuration.ORIENTATION_UNDEFINED) {
+            return "UNKNOWN";
+        } else {
+            return "null";
+        }
+    }
+
 }
