@@ -1,7 +1,7 @@
 #import "DisplayDeviceUtil.h"
-#import "RCTBridge.h"
-#import "RCTEventDispatcher.h"
-#import "RCTUtils.h"
+#import <React/RCTBridge.h>
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTUtils.h>
 
 @implementation DisplayDeviceUtil
 
@@ -16,7 +16,7 @@ RCT_EXPORT_MODULE();
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
   }
-  
+
   return self;
 }
 
@@ -26,13 +26,13 @@ RCT_EXPORT_MODULE();
 
 - (void)displayOrientationDidChange:(NSNotification*)note {
   CGSize frameSize = [UIScreen mainScreen].applicationFrame.size;
-  
+
   /* For Non-Orientation Dependant Versions */
   if ((NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1)
       && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
     frameSize = CGSizeMake(frameSize.height, frameSize.width);
   }
-  
+
   UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
   NSDictionary *dimensions = @{ @"width": @(frameSize.width), @"height": @(frameSize.height),      @"orientation": @(deviceOrientation) };
   NSLog(@"%@", dimensions);
@@ -42,7 +42,7 @@ RCT_EXPORT_MODULE();
 - (NSDictionary *)constantsToExport {
   BOOL isPhone = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
   BOOL isTablet = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
-  
+
   return @{
     @"isPhone" : @(isPhone),
     @"isTablet" : @(isTablet)
